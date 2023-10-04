@@ -24,8 +24,28 @@ const getSingleSpecialization = async (
   return result
 }
 
+const updateSpecialization = async (
+  id: string,
+  payload: Partial<Specialization>,
+): Promise<Specialization | null> => {
+  const result = await prisma.specialization.update({
+    where: { id },
+    data: payload,
+  })
+  return result
+}
+
+const deleteSpecialization = async (id: string) => {
+  const result = prisma.specialization.delete({
+    where: { id },
+  })
+  return result
+}
+
 export const specializationService = {
   createSpecialization,
   getAllSpecialization,
   getSingleSpecialization,
+  updateSpecialization,
+  deleteSpecialization,
 }

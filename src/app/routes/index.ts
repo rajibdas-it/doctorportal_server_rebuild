@@ -1,6 +1,7 @@
 import express from 'express'
 import { userRoutes } from '../modules/user/user.routes'
 import { specializationRoutes } from '../modules/specialization/specialization.routes'
+import { doctorRoutes } from '../modules/doctor/doctor.routes'
 
 const router = express.Router()
 
@@ -12,6 +13,10 @@ const routes = [
   {
     pathName: '/specialization',
     routeName: specializationRoutes,
+  },
+  {
+    pathName: '/doctor',
+    routeName: doctorRoutes,
   },
 ]
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Doctor } from '@prisma/client'
 import prisma from '../../shared/prisma'
 const createDoctor = async (data: Doctor): Promise<Doctor | undefined> => {
@@ -5,13 +6,59 @@ const createDoctor = async (data: Doctor): Promise<Doctor | undefined> => {
   return result
 }
 
-const getAllDoctor = async (): Promise<Doctor[]> => {
+const getAllDoctor = async (
+  page: number,
+  limit: number,
+  sortBy: string,
+  sortOrder: string,
+  searchTerm: string,
+): Promise<Doctor[] | any> => {
   const result = await prisma.doctor.findMany({
+    where: {
+      OR: [
+        {
+          fullName: {
+            contains: searchTerm,
+            mode: 'insensitive',
+          },
+        },
+        {
+          specialization: {
+            name: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
+        },
+        {
+          specialization: {
+            descriptons: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
+        },
+      ],
+    },
     include: {
       specialization: true,
     },
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+    take: limit,
+    skip: (page - 1) * limit,
   })
-  return result
+
+  const total = await prisma.doctor.count()
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  }
 }
 
 const getSingleDoctor = async (id: string): Promise<Doctor | null> => {

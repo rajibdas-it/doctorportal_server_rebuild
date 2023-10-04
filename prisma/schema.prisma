@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,12 +14,12 @@ model Doctor {
   phoneNumber      String         @unique @map("phone_number")
   role             String         @default("doctor")
   qualification    String
-  specializationId String         @map("specialization_id")
-  specialization   Specialization @relation(fields: [specializationId], references: [id])
   password         String
   isPasswordReset  Boolean        @default(false) @map("is_password_reset")
   createdAt        DateTime       @default(now()) @map("created_at")
   updatedAt        DateTime       @updatedAt @map("updated_at")
+  specializationId String         @map("specialization_id")
+  specialization   Specialization @relation(fields: [specializationId], references: [id])
 
   @@map("doctors")
 }

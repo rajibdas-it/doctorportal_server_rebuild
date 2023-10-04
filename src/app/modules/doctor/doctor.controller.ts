@@ -21,11 +21,27 @@ const createDoctor: RequestHandler = async (req, res) => {
 
 const getAllDoctor: RequestHandler = async (req, res) => {
   try {
-    const result = await doctorService.getAllDoctor()
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'createdAt',
+      sortOrder = 'asc',
+      searchTerm,
+    } = req.query
+    // console.log(req.query)
+
+    const result = await doctorService.getAllDoctor(
+      Number(page),
+      Number(limit),
+      String(sortBy),
+      String(sortOrder),
+      String(searchTerm),
+    )
     res.status(httpStatus.OK).json({
       statusCode: httpStatus.OK,
       message: 'Doctors retrived successfully',
-      data: result,
+      meta: result.meta,
+      data: result.data,
     })
   } catch (error) {
     res.status(httpStatus.BAD_REQUEST).json({

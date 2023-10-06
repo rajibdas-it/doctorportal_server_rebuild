@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import express, { Application, NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import httpStatus from 'http-status'
 import dpRoutes from './app/routes'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
 
 const app: Application = express()
 
@@ -30,6 +34,19 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     next(error)
   }
+})
+
+app.use(globalErrorHandler)
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    statusCode: httpStatus.NOT_FOUND,
+    message: 'url not found',
+    errorMessages: {
+      path: req.originalUrl,
+      message: 'Not Found',
+    },
+  })
 })
 
 export default app

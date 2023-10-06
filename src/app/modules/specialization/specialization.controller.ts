@@ -2,7 +2,7 @@ import { RequestHandler } from 'express'
 import httpStatus from 'http-status'
 import { specializationService } from './specialization.service'
 
-const createSpecialization: RequestHandler = async (req, res) => {
+const createSpecialization: RequestHandler = async (req, res, next) => {
   try {
     const data = req.body
     const result = await specializationService.createSpecialization(data)
@@ -12,14 +12,11 @@ const createSpecialization: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
+    next(error)
   }
 }
 
-const getAllSpecialization: RequestHandler = async (req, res) => {
+const getAllSpecialization: RequestHandler = async (req, res, next) => {
   try {
     const result = await specializationService.getAllSpecialization()
     res.status(httpStatus.OK).json({
@@ -28,14 +25,11 @@ const getAllSpecialization: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
+    next(error)
   }
 }
 
-const getSingleSpecialization: RequestHandler = async (req, res) => {
+const getSingleSpecialization: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id
     const result = await specializationService.getSingleSpecialization(id)
@@ -46,14 +40,11 @@ const getSingleSpecialization: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
+    next(error)
   }
 }
 
-const updateSpecialization: RequestHandler = async (req, res) => {
+const updateSpecialization: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id
     const data = req.body
@@ -65,14 +56,11 @@ const updateSpecialization: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
+    next(error)
   }
 }
 
-const deleteSpecialization: RequestHandler = async (req, res) => {
+const deleteSpecialization: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id
     const result = await specializationService.deleteSpecialization(id)
@@ -82,10 +70,7 @@ const deleteSpecialization: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went worng',
-    })
+    next(error)
   }
 }
 

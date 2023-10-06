@@ -1,8 +1,9 @@
 import { RequestHandler } from 'express'
 import httpStatus from 'http-status'
 import { doctorService } from './doctor.service'
+import catchAsync from '../../shared/catchAsync'
 
-const createDoctor: RequestHandler = async (req, res) => {
+const createDoctor: RequestHandler = async (req, res, next) => {
   try {
     const data = req.body
     const result = await doctorService.createDoctor(data)
@@ -12,46 +13,36 @@ const createDoctor: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
+    next(error)
   }
 }
 
-const getAllDoctor: RequestHandler = async (req, res) => {
-  try {
-    const {
-      page = 1,
-      limit = 10,
-      sortBy = 'createdAt',
-      sortOrder = 'asc',
-      searchTerm,
-    } = req.query
-    // console.log(req.query)
+const getAllDoctor = catchAsync(async (req, res) => {
+  const {
+    page = 1,
+    limit = 10,
+    sortBy = 'createdAt',
+    sortOrder = 'asc',
+    searchTerm,
+  } = req.query
+  // console.log(req.query)
 
-    const result = await doctorService.getAllDoctor(
-      Number(page),
-      Number(limit),
-      String(sortBy),
-      String(sortOrder),
-      String(searchTerm),
-    )
-    res.status(httpStatus.OK).json({
-      statusCode: httpStatus.OK,
-      message: 'Doctors retrived successfully',
-      meta: result.meta,
-      data: result.data,
-    })
-  } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
-  }
-}
+  const result = await doctorService.getAllDoctor(
+    Number(page),
+    Number(limit),
+    String(sortBy),
+    String(sortOrder),
+    String(searchTerm),
+  )
+  res.status(httpStatus.OK).json({
+    statusCode: httpStatus.OK,
+    message: 'Doctors retrived successfully',
+    meta: result.meta,
+    data: result.data,
+  })
+})
 
-const getSingleDoctor: RequestHandler = async (req, res) => {
+const getSingleDoctor: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id
     const result = await doctorService.getSingleDoctor(id)
@@ -61,13 +52,10 @@ const getSingleDoctor: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
+    next(error)
   }
 }
-const udpateDoctor: RequestHandler = async (req, res) => {
+const udpateDoctor: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id
     const data = req.body
@@ -78,14 +66,11 @@ const udpateDoctor: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
+    next(error)
   }
 }
 
-const deleteDoctor: RequestHandler = async (req, res) => {
+const deleteDoctor: RequestHandler = async (req, res, next) => {
   try {
     const id = req.params.id
     const result = await doctorService.deleteDoctor(id)
@@ -95,10 +80,7 @@ const deleteDoctor: RequestHandler = async (req, res) => {
       data: result,
     })
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).json({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: 'something went wrong',
-    })
+    next(error)
   }
 }
 export const doctorController = {

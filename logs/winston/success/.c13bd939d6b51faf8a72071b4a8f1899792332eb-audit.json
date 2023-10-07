@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\engrr\\OneDrive\\Desktop\\doctor_portal\\doctorportal_server_rebuild\\logs\\winston\\success\\.c13bd939d6b51faf8a72071b4a8f1899792332eb-audit.json",
+    "files": [
+        {
+            "date": 1696706236437,
+            "name": "C:\\Users\\engrr\\OneDrive\\Desktop\\doctor_portal\\doctorportal_server_rebuild\\logs\\winston\\success\\doctor_portal-08-10-2023_success.log",
+            "hash": "ca61cd33817938202e688cecd5957789bd80406ba75020d8b6ca4c856374466d"
+        }
+    ],
+    "hashType": "sha256"
+}

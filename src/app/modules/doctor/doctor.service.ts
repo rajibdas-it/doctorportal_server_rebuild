@@ -1,7 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Doctor } from '@prisma/client'
 import prisma from '../../shared/prisma'
+import ApiError from '../../../errors/apiErrors'
+import httpStatus from 'http-status'
 const createDoctor = async (data: Doctor): Promise<Doctor | undefined> => {
+  const isDoctorExist = await prisma.doctor.findUnique({
+    where: { email: data.email },
+  })
+
+  if (isDoctorExist) {
+    throw new ApiError(
+      httpStatus.CONFLICT,
+      'This doctor has already added in our portal',
+    )
+  }
   const result = await prisma.doctor.create({ data })
   return result
 }

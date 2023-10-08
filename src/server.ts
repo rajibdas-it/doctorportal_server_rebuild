@@ -34,3 +34,10 @@ const doctorPortalServer = async () => {
 }
 
 doctorPortalServer()
+
+process.on('SIGTERM', () => {
+  infoLogger.info('sigterm is received')
+  if (server) {
+    server.close()
+  }
+})

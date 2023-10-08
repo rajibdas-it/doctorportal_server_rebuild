@@ -25,16 +25,26 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/v1/', dpRoutes)
 
 //cheking route
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.status(httpStatus.OK).json({
-      statusCode: httpStatus.OK,
-      message: 'server is running',
-    })
-  } catch (error) {
-    next(error)
-  }
-})
+// app.get('/', (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     res.status(httpStatus.OK).json({
+//       statusCode: httpStatus.OK,
+//       message: 'server is running',
+//     })
+//   } catch (error) {
+//     next(error)
+//   }
+// })
+
+//Unhandle Rejection checking
+// app.get('/', (req: Request, res: Response, next: NextFunction) => {
+//   Promise.reject(new Error('unhandle rejection'))
+// })
+
+//uncaught rejection checking
+// app.get('/', (req: Request, res: Response, next: NextFunction) => {
+//   console.log(x)
+// })
 
 app.use(globalErrorHandler)
 

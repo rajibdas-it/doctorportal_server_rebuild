@@ -5,6 +5,12 @@ import { Server } from 'http'
 
 let server: Server
 
+process.on('uncaughtException', error => {
+  errorLogger.error(error)
+  console.log('uncaught exception detected')
+  process.exit(1)
+})
+
 const doctorPortalServer = async () => {
   try {
     server = app.listen(config.port, () => {

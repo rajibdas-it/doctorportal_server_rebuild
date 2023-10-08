@@ -11,7 +11,7 @@ process.on('uncaughtException', error => {
   process.exit(1)
 })
 
-const doctorPortalServer = async () => {
+const bootStrap = async () => {
   try {
     server = app.listen(config.port, () => {
       infoLogger.info(`server running on port`, config.port)
@@ -33,7 +33,7 @@ const doctorPortalServer = async () => {
   })
 }
 
-doctorPortalServer()
+bootStrap()
 
 process.on('SIGTERM', () => {
   infoLogger.info('sigterm is received')

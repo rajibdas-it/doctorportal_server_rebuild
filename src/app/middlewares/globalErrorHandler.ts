@@ -6,6 +6,8 @@ import { IGenericErrorMessage } from '../../interfaces/error'
 import ApiError from '../../errors/apiErrors'
 import { config } from '../../config'
 import { errorLogger } from '../shared/logger'
+import { ZodError } from 'zod'
+import handleZodError from '../../errors/handleZodErrors'
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   config.node_env === 'development'
@@ -27,6 +29,11 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     errorMessages = error?.message
       ? [{ path: '', message: error?.message }]
       : []
+  } else if (error instanceof ZodError) {
+    const simplifiedError = handleZodError(error)
+    statusCode = simplifiedError.statusCode
+    message = simplifiedError.message
+    errorMessages = simplifiedError.errorMessage
   }
 
   res.status(statusCode).json({

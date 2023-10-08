@@ -1,8 +1,14 @@
 import express from 'express'
 import { specializationController } from './specialization.controller'
+import { specializationValidation } from './specialization.validation'
+import validateRequest from '../../middlewares/validateRequest'
 
 const router = express.Router()
-router.post('/create', specializationController.createSpecialization)
+router.post(
+  '/create',
+  validateRequest(specializationValidation.createSpecializationZodSchema),
+  specializationController.createSpecialization,
+)
 router.get('/:id', specializationController.getSingleSpecialization)
 router.patch(
   '/update-specialization/:id',

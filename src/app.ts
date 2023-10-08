@@ -41,7 +41,7 @@ app.use('/api/v1/', dpRoutes)
 //   Promise.reject(new Error('unhandle rejection'))
 // })
 
-//uncaught rejection checking
+// uncaught rejection checking
 // app.get('/', (req: Request, res: Response, next: NextFunction) => {
 //   console.log(x)
 // })

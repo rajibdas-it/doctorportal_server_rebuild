@@ -6,8 +6,7 @@ import { Server } from 'http'
 let server: Server
 
 process.on('uncaughtException', error => {
-  errorLogger.error(error)
-  console.log('uncaught exception detected')
+  console.log('uncaught exception detected', error)
   process.exit(1)
 })
 
@@ -21,7 +20,7 @@ const bootStrap = async () => {
   }
 
   process.on('unhandledRejection', error => {
-    console.log('unhandle rejection detected. we are closing server now.')
+    console.log('unhandle rejection detected. we are closing server now!')
     if (server) {
       server.close(() => {
         errorLogger.error(error)
@@ -36,7 +35,7 @@ const bootStrap = async () => {
 bootStrap()
 
 process.on('SIGTERM', () => {
-  infoLogger.info('sigterm is received')
+  infoLogger.info('SIGTERM received')
   if (server) {
     server.close()
   }

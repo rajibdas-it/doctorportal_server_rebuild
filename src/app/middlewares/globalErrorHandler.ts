@@ -2,18 +2,18 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable prefer-const */
 import { ErrorRequestHandler } from 'express'
-import { IGenericErrorMessage } from '../../interfaces/error'
+
 import ApiError from '../../errors/apiErrors'
 import { config } from '../../config'
 import { errorLogger } from '../shared/logger'
 import { ZodError } from 'zod'
 import handleZodError from '../../errors/handleZodErrors'
+import { IGenericErrorMessage } from '../../interface/error'
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   config.node_env === 'development'
     ? console.log('Global Error Handler:', error)
     : errorLogger.error('Global Error Handler:', error)
-
   let statusCode = 500
   let message = 'something went wrong'
   let errorMessages: IGenericErrorMessage[] = []
@@ -33,7 +33,7 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     const simplifiedError = handleZodError(error)
     statusCode = simplifiedError.statusCode
     message = simplifiedError.message
-    errorMessages = simplifiedError.errorMessage
+    errorMessages = simplifiedError.errorMessages
   }
 
   res.status(statusCode).json({

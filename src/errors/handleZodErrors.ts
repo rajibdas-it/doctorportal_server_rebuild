@@ -1,18 +1,20 @@
-import { ZodIssue } from 'zod'
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ZodError, ZodIssue } from 'zod'
+import { IGenericErrorResponse } from '../interface/common'
+import { IGenericErrorMessage } from '../interface/error'
 
-const handleZodError = (error: any) => {
-  const errors = error.issues.map((issue: ZodIssue) => {
+const handleZodError = (error: ZodError): IGenericErrorResponse => {
+  const errors: IGenericErrorMessage[] = error.issues.map((issue: ZodIssue) => {
     return {
-      path: issue?.path[issue.path.length - 1],
+      path: issue?.path[issue?.path.length - 1],
       message: issue?.message,
     }
   })
-  const status = 500
+
+  const statusCode = 400
   return {
-    statusCode: status,
-    message: 'validation error',
-    errorMessage: errors,
+    statusCode,
+    message: 'Validation Error',
+    errorMessages: errors,
   }
 }
 export default handleZodError
